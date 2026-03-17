@@ -33,9 +33,14 @@ echo -e "\n${YELLOW}🧹 [1/4] 正在清理旧环境，释放 80 和 443 端口.
 systemctl stop caddy sing-box nginx apache2 2>/dev/null
 pkill -9 caddy sing-box nginx apache2 2>/dev/null
 
-echo -e "${YELLOW}📦 [2/4] 正在安装最新版 Sing-box...${NC}"
-# 使用官方脚本自动拉取最新版
-bash <(curl -Ls https://raw.githubusercontent.com/SagerNet/sing-box/main/install.sh)
+echo -e "${YELLOW}📦 [2/4] 正在下载并安装 Sing-box (1.13.0)...${NC}"
+# 放弃会 404 的官方脚本，直接暴力拉取包含 Naive 协议的二进制文件
+cd /tmp
+wget -qO sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.13.0-rc.5/sing-box-1.13.0-rc.5-linux-amd64.tar.gz
+tar -zxf sing-box.tar.gz
+cp sing-box-1.13.0-rc.5-linux-amd64/sing-box /usr/local/bin/
+chmod +x /usr/local/bin/sing-box
+rm -rf sing-box.tar.gz sing-box-1.13.0-rc.5-linux-amd64
 
 echo -e "${YELLOW}⚙️ [3/4] 正在生成服务端配置文件...${NC}"
 mkdir -p /etc/sing-box
@@ -76,6 +81,26 @@ cat <<EOF > /etc/sing-box/config.json
 EOF
 
 echo -e "${YELLOW}🚀 [4/4] 正在配置系统服务并启动 Sing-box...${NC}"
+# 补上缺失的系统服务文件，确保它能后台运行
+cat <<EOF > /etc/systemd/system/sing-box.service
+[Unit]
+Description=sing-box service
+Documentation=https://sing-box.sagernet.org
+After=network.target nss-lookup.target network-online.target
+
+[Service]
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
+ExecStart=/usr/local/bin/sing-box run -c /etc/sing-box/config.json
+ExecReload=/bin/kill -HUP \$MAINPID
+Restart=on-failure
+RestartSec=10s
+LimitNOFILE=infinity
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 systemctl daemon-reload
 systemctl enable sing-box
 systemctl restart sing-box
