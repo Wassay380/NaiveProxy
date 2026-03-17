@@ -16,7 +16,7 @@
 
 ## 📦 一键安装
 
-请使用 `root` 用户登录你的 VPS，然后复制并运行以下命令：
+请使用 `root` 用户登录你的 VPS，然后复制并运行以下命令（建议点击代码块右上角的“复制”按钮）：
 
 ```bash
-bash <(curl -Ls [https://raw.githubusercontent.com/dododook/NaiveProxy/refs/heads/main/install.sh](https://raw.githubusercontent.com/dododook/NaiveProxy/refs/heads/main/install.sh))
+bash -c "$(curl -Ls [https://raw.githubusercontent.com/dododook/NaiveProxy/refs/heads/main/install.sh](https://raw.githubusercontent.com/dododook/NaiveProxy/refs/heads/main/install.sh))"
